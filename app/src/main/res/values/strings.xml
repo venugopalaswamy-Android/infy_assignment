@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">InfyAssignment</string>
+    <string name="no_title">No Title for this record</string>
+    <string name="no_description">No Description for this record</string>
+    <string name="no_internetconnection">Bad Internet connection. please check and try again.</string>
+    <string name="txt_re_try">Re-try</string>
+    <string name="txt_fetching">Fetching data.....</string>
+    <string name="txt_nodata">No data found.</string>
+    <string name="txt_went_wrong">Something went wrong. please check and try again..</string>
+</resources>

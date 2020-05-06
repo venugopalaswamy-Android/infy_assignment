@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context="com.android.infyassignment.ui.facts.FactsListScreen">
+
+
+
+    <LinearLayout
+        android:id="@+id/content_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/lato_bold"
+                android:includeFontPadding="false"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:textSize="@dimen/item_header_size"/>
+
+        </RelativeLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/itemsswipetorefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/facts_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:fadeScrollbars="false" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/no_internet_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+        <TextView
+            android:id="@+id/internet_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:includeFontPadding="false"
+            android:textSize="@dimen/item_header_size"
+            android:textColor="@color/black"
+            android:fontFamily="@font/lato_regular"
+            android:text="@string/no_internetconnection"
+            android:layout_margin="10dp"
+            android:gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/btn_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/internet_txt"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorPrimary"
+            android:text="@string/txt_re_try"
+            android:textSize="@dimen/item_content_size"
+            android:textColor="@color/white"
+            android:fontFamily="@font/lato_regular"
+            android:textAllCaps="false"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/progressbar_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            />
+
+        <TextView
+            android:id="@+id/txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:includeFontPadding="false"
+            android:textSize="@dimen/item_header_size"
+            android:textColor="@color/black"
+            android:layout_below="@+id/progressbar"
+            android:fontFamily="@font/lato_regular"
+            android:text="@string/txt_fetching"
+            android:layout_margin="10dp"
+            android:gravity="center_horizontal"/>
+
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
