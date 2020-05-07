@@ -16,16 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.infyassignment.ApplicationLevel
 import com.android.infyassignment.R
-import com.android.infyassignment.data.model.ClsFacts
 import com.android.infyassignment.utilities.CallBackInterFace
 import com.android.infyassignment.viewModel.FactsViewModel
 import kotlinx.android.synthetic.main.fragment_facts_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+
 
 /**
  * A simple [Fragment] subclass.
@@ -86,9 +82,14 @@ class FactsListFragment : Fragment() {
      * Error Handling from Server Response
      */
     private fun setUpErrorHandling() {
-        error_view.visibility = View.VISIBLE
-        progressbar_view.visibility = View.GONE
-        text_error.text = getString(R.string.txt_went_wrong)
+        factsViewModel.isErrorRaised.observe(this, Observer {
+            if(it){
+                error_view.visibility = View.VISIBLE
+                progressbar_view.visibility = View.GONE
+                text_error.text = getString(R.string.txt_went_wrong)
+            }
+        })
+
     }
 
 

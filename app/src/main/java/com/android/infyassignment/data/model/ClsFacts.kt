@@ -2,10 +2,8 @@ package com.android.infyassignment.data.model
 
 import androidx.room.*
 import com.android.infyassignment.utilities.COLUMN_INDEX_VALUE
-import com.android.infyassignment.utilities.DataConvertor
 
 @Entity(tableName = "tbl_facts")
-@TypeConverters(DataConvertor::class)
 data class ClsFacts(
     @ColumnInfo(name = "description") var description: String?,
     @ColumnInfo(name = "imageHref") var imageHref: String?,
