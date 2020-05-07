@@ -1,10 +1,24 @@
 package com.android.infyassignment.data.model
 
+import androidx.room.*
+import com.android.infyassignment.utilities.COLUMN_INDEX_VALUE
+import com.android.infyassignment.utilities.DataConvertor
+
+@Entity(tableName = "tbl_facts")
+@TypeConverters(DataConvertor::class)
 data class ClsFacts(
-    val description: String,
-    val imageHref: String,
-    val title: String
-){
+    @ColumnInfo(name = "description") var description: String?,
+    @ColumnInfo(name = "imageHref") var imageHref: String?,
+    @ColumnInfo(name = "title") var title: String?
+) {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "factId")
+    var factId: Long = 0L
+
+    @ColumnInfo(name = "root_fact_id")
+    var root_fact_id: Long = COLUMN_INDEX_VALUE
+
     override fun toString(): String {
         return "ClsFacts(description='$description', imageHref='$imageHref', title='$title')"
     }

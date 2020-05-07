@@ -24,9 +24,9 @@ class ApplicationLevel : Application() {
         /**
          * function for checking the InterNet Connection.
          */
-        fun verifyAvailableNetwork(activity: AppCompatActivity): Boolean {
+        fun verifyAvailableNetwork(context: Context): Boolean {
             val connectivityManager =
-                activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val networkInfo = connectivityManager.activeNetworkInfo
             return networkInfo != null && networkInfo.isConnected
         }

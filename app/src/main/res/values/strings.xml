@@ -7,4 +7,6 @@
     <string name="txt_fetching">Fetching data.....</string>
     <string name="txt_nodata">No data found.</string>
     <string name="txt_went_wrong">Something went wrong. please check and try again..</string>
+
+
 </resources>

@@ -1,28 +1,32 @@
 package com.android.infyassignment.viewModel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.android.infyassignment.data.model.ClsFacts
 import com.android.infyassignment.data.model.ClsFactsResponse
-import com.android.infyassignment.repository.DataRepository
+import com.android.infyassignment.data.model.ClsRootFact
+import com.android.infyassignment.repository.ViewModelRepository
 
-class FactsViewModel(val dataRepository: DataRepository) : ViewModel() {
+class FactsViewModel(val viewModelRepository: ViewModelRepository) : ViewModel() {
 
-    var clsFactsResponse = MutableLiveData<ClsFactsResponse>()
     var isErrorRaised = MutableLiveData<Boolean>()
 
-    //initalizing the Livedata values with defaults.
     init {
-        clsFactsResponse.value = ClsFactsResponse(listOf(),"")
         isErrorRaised.value = false
     }
 
-    /**
-     * function to fetch the facts from server
-     */
-    fun getFacts(){
-        dataRepository.getFactFromServer(object : DataRepository.CallBackListener{
+
+    fun getTotalFactsObjectFromDB(): LiveData<List<ClsFacts>> {
+        return viewModelRepository.getToatlResponseObjFromDB()
+    }
+
+
+    fun callToGetFactsFromServer() {
+        isErrorRaised.value = false
+        viewModelRepository.getFactFromServer(object : ViewModelRepository.CallBackListener {
             override fun onSuccess(data: ClsFactsResponse) {
-               clsFactsResponse.value = data
+
             }
 
             override fun onFailure() {
@@ -30,5 +34,12 @@ class FactsViewModel(val dataRepository: DataRepository) : ViewModel() {
             }
 
         })
+
     }
+
+    fun getRootFacts(): LiveData<ClsRootFact> {
+        return viewModelRepository.getRootFactsData()
+    }
+
+
 }
