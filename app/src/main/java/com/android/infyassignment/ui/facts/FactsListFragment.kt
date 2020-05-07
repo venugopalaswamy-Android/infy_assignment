@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.infyassignment.ApplicationLevel
@@ -61,18 +62,24 @@ class FactsListFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        recyclerView.layoutManager =
-            LinearLayoutManager(view!!.context, RecyclerView.VERTICAL, false)
+        val isTablet: Boolean = view!!.context.resources.getBoolean(R.bool.isTablet)
+        // condition to set the Different View Style for Tablet & mobile cards.
+        if(isTablet){
+            recyclerView.layoutManager = GridLayoutManager(view!!.context,2)
+        }else{
+            recyclerView.layoutManager =
+                LinearLayoutManager(view!!.context, RecyclerView.VERTICAL, false)
+        }
         progressbar_view.visibility = View.GONE
         error_view.visibility = View.GONE
 
-        setUpListToDisplay()
+        setUpListToDisplay()// list display
 
-        setUpTitleInActivity()
+        setUpTitleInActivity() // title set
 
-        setUpPullToRefresh()
+        setUpPullToRefresh() //pull to refresh
 
-        setUpErrorHandling()
+        setUpErrorHandling() // error Handling
     }
 
     /**
