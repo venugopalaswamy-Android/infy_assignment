@@ -12,7 +12,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ViewModelRepository(val apiInterface: APIInterface, val factDao: FactDao) {
+class ViewModelRepository( private val apiInterface: APIInterface, val factDao: FactDao) {
 
     /**
      * function to call the Fact Get from server.
@@ -32,15 +32,11 @@ class ViewModelRepository(val apiInterface: APIInterface, val factDao: FactDao) 
                 if (response.body() != null) {
                     Thread(Runnable {
                         val clsFactsResponse = response.body()!!
-                        if (clsFactsResponse == null) {
-
-                        }
-                        // factDao.deleteExistingResponse(clsFactsResponse)
-                        var clsRootFact = ClsRootFact(clsFactsResponse.title)
+                        val clsRootFact = ClsRootFact(clsFactsResponse.title)
                         factDao.deleteRootFact()
-                        factDao.deletAllFacts()
-                        factDao.upsertRootFactDetail(clsRootFact)
-                        factDao.upsertFactsList(clsFactsResponse.clsFacts)
+                        factDao.deleteAllFacts()
+                        factDao.insertRootFactDetail(clsRootFact)
+                        factDao.insertFactsList(clsFactsResponse.clsFacts)
                     }).start()
                 } else {
                     listener.onFailure()
@@ -52,7 +48,7 @@ class ViewModelRepository(val apiInterface: APIInterface, val factDao: FactDao) 
 
     }
 
-    fun getToatlResponseObjFromDB(): LiveData<List<ClsFacts>> {
+    fun getTotalResponseObjFromDB(): LiveData<List<ClsFacts>> {
         return factDao.getAllFactTableData()
     }
 
@@ -65,7 +61,7 @@ class ViewModelRepository(val apiInterface: APIInterface, val factDao: FactDao) 
      * interface to give the CallBacks on the Response from Server.
      */
     interface CallBackListener {
-        fun onSuccess(data: ClsFactsResponse);
+        fun onSuccess(data: ClsFactsResponse)
         fun onFailure()
     }
 }

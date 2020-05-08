@@ -7,49 +7,56 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.android.infyassignment.ApplicationLevel
 import com.android.infyassignment.R
 import com.android.infyassignment.data.model.ClsFacts
+import com.android.infyassignment.utilities.Common
 import com.bumptech.glide.Glide
 
-class FactsListAdapter(private val context: Context,private val listOfFacts: List<ClsFacts>): RecyclerView.Adapter<FactsListAdapter.ViewHolder>() {
+class FactsListAdapter(
+    private val context: Context,
+    private var listOfFacts: MutableList<ClsFacts>
+) : RecyclerView.Adapter<FactsListAdapter.ViewHolder>() {
 
-    inner class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
-        val txt_title = itemView.findViewById(R.id.txt_title) as TextView
-        val txt_description = itemView.findViewById(R.id.txt_description) as TextView
-        val img_profile = itemView.findViewById(R.id.img_Profile) as ImageView
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val txtTitle = itemView.findViewById(R.id.txt_title) as TextView
+        val txtDescription = itemView.findViewById(R.id.txt_description) as TextView
+        val imgProfile = itemView.findViewById(R.id.img_Profile) as ImageView
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.facts_list_item, parent, false)
-        return ViewHolder(v);
+        return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
-      return listOfFacts.size
+        return listOfFacts.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val fact : ClsFacts = listOfFacts[position]
-        if(ApplicationLevel.isNullOrEmpty(fact.title)){
-            holder.txt_title.text = context.getString(R.string.no_title)
-        }else{
-            holder.txt_title.text = fact.title
+        val fact: ClsFacts = listOfFacts[position]
+        if (Common.isNullOrEmpty(fact.title)) {
+            holder.txtTitle.text = context.getString(R.string.no_title)
+        } else {
+            holder.txtTitle.text = fact.title
         }
-        if(ApplicationLevel.isNullOrEmpty(fact.description)){
-            holder.txt_description.text = context.getString(R.string.no_description)
-        }else{
-            holder.txt_description.text = fact.description
+        if (Common.isNullOrEmpty(fact.description)) {
+            holder.txtDescription.text = context.getString(R.string.no_description)
+        } else {
+            holder.txtDescription.text = fact.description
         }
         Glide
             .with(context)
             .load(fact.imageHref)
             .centerCrop()
             .placeholder(R.drawable.place_holder)
-            .into(holder.img_profile)
+            .into(holder.imgProfile)
     }
 
+    fun updateList(it: MutableList<ClsFacts>) {
+        listOfFacts.clear()
+        listOfFacts = it
+    }
 
 
 }

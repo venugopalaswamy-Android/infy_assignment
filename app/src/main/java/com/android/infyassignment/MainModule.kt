@@ -6,7 +6,7 @@ import com.android.infyassignment.data.network.APIInterface
 import com.android.infyassignment.repository.ViewModelRepository
 import com.android.infyassignment.utilities.BASE_URL
 import com.android.infyassignment.utilities.DATA_BASE_NAME
-import com.android.infyassignment.viewModel.FactsViewModel
+import com.android.infyassignment.viewmodel.FactsViewModel
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 import retrofit2.Retrofit
@@ -15,7 +15,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val mainModule = module {
 
-    single { Room.databaseBuilder(get(), AppDatabase::class.java, DATA_BASE_NAME).build() }
+    single { Room.databaseBuilder(get(), AppDatabase::class.java, DATA_BASE_NAME)
+        .fallbackToDestructiveMigration()
+        .build() }
     single { get<AppDatabase>().getFactDao() }
     single { ViewModelRepository(get(),get()) }
     single { createWebService() }

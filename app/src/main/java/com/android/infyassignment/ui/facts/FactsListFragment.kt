@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,18 +15,18 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.infyassignment.ApplicationLevel
 import com.android.infyassignment.R
+import com.android.infyassignment.data.model.ClsFacts
 import com.android.infyassignment.utilities.CallBackInterFace
-import com.android.infyassignment.viewModel.FactsViewModel
+import com.android.infyassignment.utilities.Common
+import com.android.infyassignment.viewmodel.FactsViewModel
 import kotlinx.android.synthetic.main.fragment_facts_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-
 /**
- * A simple [Fragment] subclass.
- * Use the [FactsListFragment.newInstance] factory method to
+ * A simple  subclass.
+ * Use the  factory method to
  * create an instance of this fragment.
  */
 class FactsListFragment : Fragment() {
@@ -33,10 +34,6 @@ class FactsListFragment : Fragment() {
     private val factsViewModel: FactsViewModel by viewModel()
     private lateinit var callBackInterface: CallBackInterFace
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +48,7 @@ class FactsListFragment : Fragment() {
         try {
             callBackInterface = context as CallBackInterFace
         } catch (ex: ClassCastException) {
-            throw ClassCastException(context::class.simpleName + " must implement onSomeEventListener");
+            throw ClassCastException(context::class.simpleName + " must implement onSomeEventListener")
         }
     }
 
@@ -60,12 +57,15 @@ class FactsListFragment : Fragment() {
         super.onStart()
         val isTablet: Boolean = view!!.context.resources.getBoolean(R.bool.isTablet)
         // condition to set the Different View Style for Tablet & mobile cards.
-        if(isTablet){
-            recyclerView.layoutManager = GridLayoutManager(view!!.context,2)
-        }else{
+        if (isTablet) {
+            recyclerView.layoutManager = GridLayoutManager(view!!.context, 2)
+        } else {
             recyclerView.layoutManager =
                 LinearLayoutManager(view!!.context, RecyclerView.VERTICAL, false)
         }
+
+        setUpPullToRefresh() //pull to refresh
+
         progressbar_view.visibility = View.GONE
         error_view.visibility = View.GONE
 
@@ -73,7 +73,6 @@ class FactsListFragment : Fragment() {
 
         setUpTitleInActivity() // title set
 
-        setUpPullToRefresh() //pull to refresh
 
         setUpErrorHandling() // error Handling
     }
@@ -83,10 +82,11 @@ class FactsListFragment : Fragment() {
      */
     private fun setUpErrorHandling() {
         factsViewModel.isErrorRaised.observe(this, Observer {
-            if(it){
+            if (it) {
                 error_view.visibility = View.VISIBLE
                 progressbar_view.visibility = View.GONE
                 text_error.text = getString(R.string.txt_went_wrong)
+                swipeToRefresh.isRefreshing = false
             }
         })
 
@@ -96,17 +96,31 @@ class FactsListFragment : Fragment() {
     /**
      * render & update the UI
      */
+    private var factsListAdapter: FactsListAdapter? = null
+    private var isCalledForData: Boolean = false
     private fun setUpListToDisplay() {
         factsViewModel.getTotalFactsObjectFromDB().observe(this, Observer {
-            if (it.isEmpty() || it == null) {
-                callToServerForFetchingFacts(false)
+            if (it == null || it.isEmpty()) {
+                if (!isCalledForData) {
+                    progressbar_view.visibility = View.VISIBLE
+                    error_view.visibility = View.GONE
+                    callToServerForFetchingFacts(false)
+                }
             } else {
                 progressbar_view.visibility = View.GONE
                 error_view.visibility = View.GONE
                 recyclerView.visibility = View.VISIBLE
-                var factsListAdapter = FactsListAdapter(view!!.context, it)
-                recyclerView.adapter = factsListAdapter
-                itemsswipetorefresh.isRefreshing = false
+                if (factsListAdapter == null) {
+                    factsListAdapter = FactsListAdapter(view!!.context, it as MutableList<ClsFacts>)
+                    recyclerView.adapter = factsListAdapter
+                } else {
+                    factsListAdapter?.updateList(it as MutableList<ClsFacts>)
+                    factsListAdapter?.notifyDataSetChanged()
+                }
+                swipeToRefresh.isRefreshing = false
+
+                Handler().postDelayed( { isCalledForData = false }, 3000)
+
 
             }
         })
@@ -128,15 +142,15 @@ class FactsListFragment : Fragment() {
      */
     private fun setUpPullToRefresh() {
         //** Set the colors of the Pull To Refresh View
-        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(
+        swipeToRefresh.setProgressBackgroundColorSchemeColor(
             ContextCompat.getColor(
                 view!!.context,
                 R.color.colorPrimary
             )
         )
-        itemsswipetorefresh.setColorSchemeColors(Color.WHITE)
+        swipeToRefresh.setColorSchemeColors(Color.WHITE)
 
-        itemsswipetorefresh.setOnRefreshListener {
+        swipeToRefresh.setOnRefreshListener {
             callToServerForFetchingFacts(true)
         }
     }
@@ -145,18 +159,23 @@ class FactsListFragment : Fragment() {
     /**
      * calling to server to fetch the Facts
      */
-    fun callToServerForFetchingFacts(isFromPullRefresh: Boolean) {
-        if (ApplicationLevel.verifyAvailableNetwork(view!!.context as Activity)) {
+    private fun callToServerForFetchingFacts(isFromPullRefresh: Boolean) {
+
+        if (Common.verifyAvailableNetwork(view!!.context as Activity)) {
             if (isFromPullRefresh)
                 progressbar_view.visibility = View.GONE
             else
                 progressbar_view.visibility = View.VISIBLE
+            isCalledForData = true
             factsViewModel.callToGetFactsFromServer()
         } else {
-            itemsswipetorefresh.isRefreshing = false
+            if (isFromPullRefresh) {
+                swipeToRefresh.isRefreshing = false
+            }
+            progressbar_view.visibility = View.GONE
             Toast.makeText(
                 view!!.context,
-                getString(R.string.no_internetconnection),
+                getString(R.string.no_internet_connection),
                 Toast.LENGTH_LONG
             ).show()
         }

@@ -1,4 +1,4 @@
-package com.android.infyassignment.viewModel
+package com.android.infyassignment.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +8,7 @@ import com.android.infyassignment.data.model.ClsFactsResponse
 import com.android.infyassignment.data.model.ClsRootFact
 import com.android.infyassignment.repository.ViewModelRepository
 
-class FactsViewModel(val viewModelRepository: ViewModelRepository) : ViewModel() {
+class FactsViewModel(private val viewModelRepository: ViewModelRepository) : ViewModel() {
 
     var isErrorRaised = MutableLiveData<Boolean>()
 
@@ -18,9 +18,8 @@ class FactsViewModel(val viewModelRepository: ViewModelRepository) : ViewModel()
 
 
     fun getTotalFactsObjectFromDB(): LiveData<List<ClsFacts>> {
-        return viewModelRepository.getToatlResponseObjFromDB()
+        return viewModelRepository.getTotalResponseObjFromDB()
     }
-
 
     fun callToGetFactsFromServer() {
         isErrorRaised.value = false

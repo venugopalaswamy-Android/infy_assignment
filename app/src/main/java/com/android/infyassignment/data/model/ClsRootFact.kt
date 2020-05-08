@@ -11,6 +11,6 @@ data class ClsRootFact(
 ) {
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "root_id")
-    var root_id: Long = COLUMN_INDEX_VALUE
+    var rootId: Long = COLUMN_INDEX_VALUE
 
 }

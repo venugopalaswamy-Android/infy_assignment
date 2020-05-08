@@ -7,7 +7,7 @@
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/itemsswipetorefresh"
+        android:id="@+id/swipeToRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="5dp"
@@ -20,64 +20,66 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp" />
 
-            <RelativeLayout
-                android:id="@+id/progressbar_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
 
-                <ProgressBar
-                    android:id="@+id/progressbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true" />
-
-                <TextView
-                    android:id="@+id/txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/progressbar"
-                    android:layout_centerInParent="true"
-                    android:layout_margin="10dp"
-                    android:fontFamily="@font/lato_regular"
-                    android:gravity="center_horizontal"
-                    android:includeFontPadding="false"
-                    android:text="@string/txt_fetching"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/item_header_size" />
-
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/error_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
-
-
-                <TextView
-                    android:id="@+id/text_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_margin="10dp"
-                    android:gravity="center_horizontal"
-                    android:includeFontPadding="false"
-                    android:text="@string/txt_fetching"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/item_header_size"
-                    app:fontFamily="@font/lato_regular" />
-
-
-            </RelativeLayout>
         </RelativeLayout>
+
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <RelativeLayout
+        android:id="@+id/progressbar_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+        <TextView
+            android:id="@+id/txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/progressbar"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            app:fontFamily="@font/lato_regular"
+            android:gravity="center_horizontal"
+            android:includeFontPadding="false"
+            android:text="@string/txt_fetching"
+            android:textColor="@color/black"
+            android:textSize="@dimen/item_header_size" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/error_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+
+        <TextView
+            android:id="@+id/text_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:gravity="center_horizontal"
+            android:includeFontPadding="false"
+            android:text="@string/txt_fetching"
+            android:textColor="@color/black"
+            android:textSize="@dimen/item_header_size"
+            app:fontFamily="@font/lato_regular" />
+
+
+    </RelativeLayout>
 
 </FrameLayout>

@@ -13,16 +13,16 @@ interface FactDao {
     fun getAllFactTableData(): LiveData<List<ClsFacts>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun upsertRootFactDetail(clsRootFact: ClsRootFact)
+    fun insertRootFactDetail(clsRootFact: ClsRootFact)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun upsertFactsList(listOfFacts: List<ClsFacts>)
+    fun insertFactsList(listOfFacts: List<ClsFacts>)
 
     @Query("Select * From tbl_root where root_id == 0")
     fun getRootFactData(): LiveData<ClsRootFact>
 
     @Query("Delete from tbl_facts")
-    fun deletAllFacts()
+    fun deleteAllFacts()
 
     @Query("Delete from tbl_root")
     fun deleteRootFact()
