@@ -8,7 +8,6 @@ import com.android.infyassignment.data.model.ClsRootFact
 @Dao
 interface FactDao {
 
-    @Transaction
     @Query("Select * From tbl_facts")
     fun getAllFactTableData(): LiveData<List<ClsFacts>>
 

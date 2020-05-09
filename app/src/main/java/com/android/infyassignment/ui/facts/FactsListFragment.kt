@@ -43,8 +43,10 @@ class FactsListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_facts_list, container, false)
     }
 
+    private lateinit var mContext: Context
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        mContext = context
         try {
             callBackInterface = context as CallBackInterFace
         } catch (ex: ClassCastException) {
@@ -55,13 +57,13 @@ class FactsListFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        val isTablet: Boolean = view!!.context.resources.getBoolean(R.bool.isTablet)
+        val isTablet: Boolean = mContext.resources.getBoolean(R.bool.isTablet)
         // condition to set the Different View Style for Tablet & mobile cards.
         if (isTablet) {
-            recyclerView.layoutManager = GridLayoutManager(view!!.context, 2)
+            recyclerView.layoutManager = GridLayoutManager(mContext, 2)
         } else {
             recyclerView.layoutManager =
-                LinearLayoutManager(view!!.context, RecyclerView.VERTICAL, false)
+                LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
         }
 
         setUpPullToRefresh() //pull to refresh
@@ -111,7 +113,7 @@ class FactsListFragment : Fragment() {
                 error_view.visibility = View.GONE
                 recyclerView.visibility = View.VISIBLE
                 if (factsListAdapter == null) {
-                    factsListAdapter = FactsListAdapter(view!!.context, it as MutableList<ClsFacts>)
+                    factsListAdapter = FactsListAdapter(mContext, it as MutableList<ClsFacts>)
                     recyclerView.adapter = factsListAdapter
                 } else {
                     factsListAdapter?.updateList(it as MutableList<ClsFacts>)
@@ -119,7 +121,7 @@ class FactsListFragment : Fragment() {
                 }
                 swipeToRefresh.isRefreshing = false
 
-                Handler().postDelayed( { isCalledForData = false }, 3000)
+                Handler().postDelayed({ isCalledForData = false }, 3000)
 
 
             }
@@ -144,7 +146,7 @@ class FactsListFragment : Fragment() {
         //** Set the colors of the Pull To Refresh View
         swipeToRefresh.setProgressBackgroundColorSchemeColor(
             ContextCompat.getColor(
-                view!!.context,
+                mContext as Activity,
                 R.color.colorPrimary
             )
         )
@@ -161,7 +163,7 @@ class FactsListFragment : Fragment() {
      */
     private fun callToServerForFetchingFacts(isFromPullRefresh: Boolean) {
 
-        if (Common.verifyAvailableNetwork(view!!.context as Activity)) {
+        if (Common.verifyAvailableNetwork(mContext as Activity)) {
             if (isFromPullRefresh)
                 progressbar_view.visibility = View.GONE
             else
@@ -174,7 +176,7 @@ class FactsListFragment : Fragment() {
             }
             progressbar_view.visibility = View.GONE
             Toast.makeText(
-                view!!.context,
+                mContext,
                 getString(R.string.no_internet_connection),
                 Toast.LENGTH_LONG
             ).show()

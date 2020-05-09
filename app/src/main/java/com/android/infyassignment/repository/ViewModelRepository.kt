@@ -1,6 +1,5 @@
 package com.android.infyassignment.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.android.infyassignment.data.db.FactDao
 import com.android.infyassignment.data.model.ClsFacts
@@ -12,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ViewModelRepository( private val apiInterface: APIInterface, val factDao: FactDao) {
+class ViewModelRepository(private val apiInterface: APIInterface, val factDao: FactDao) {
 
     /**
      * function to call the Fact Get from server.
@@ -28,10 +27,9 @@ class ViewModelRepository( private val apiInterface: APIInterface, val factDao: 
                 call: Call<ClsFactsResponse>,
                 response: Response<ClsFactsResponse>
             ) {
-                Log.e("RESPONSE", "Value: " + response.body()!!)
                 if (response.body() != null) {
                     Thread(Runnable {
-                        val clsFactsResponse = response.body()!!
+                        val clsFactsResponse = response.body() as ClsFactsResponse
                         val clsRootFact = ClsRootFact(clsFactsResponse.title)
                         factDao.deleteRootFact()
                         factDao.deleteAllFacts()

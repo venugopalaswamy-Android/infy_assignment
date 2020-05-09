@@ -4,7 +4,6 @@ import android.app.Application
 import org.koin.android.ext.android.startKoin
 
 class ApplicationLevel : Application() {
-
     override fun onCreate() {
         super.onCreate()
         // For DI
@@ -14,7 +13,6 @@ class ApplicationLevel : Application() {
             loadPropertiesFromFile = true
         )
     }
-
 
 
 }
