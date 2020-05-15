@@ -1,17 +1,18 @@
 package com.android.infyassignment
 
 import android.app.Application
-import org.koin.android.ext.android.startKoin
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+
 
 class ApplicationLevel : Application() {
     override fun onCreate() {
         super.onCreate()
         // For DI
-        startKoin(
-            this,
-            listOf(mainModule),
-            loadPropertiesFromFile = true
-        )
+        startKoin {
+            androidContext(this@ApplicationLevel)
+            modules(listOf(mainModule))
+        }
     }
 
 

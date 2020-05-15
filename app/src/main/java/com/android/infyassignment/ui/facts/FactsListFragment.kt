@@ -21,7 +21,7 @@ import com.android.infyassignment.utilities.CallBackInterFace
 import com.android.infyassignment.utilities.Common
 import com.android.infyassignment.viewmodel.FactsViewModel
 import kotlinx.android.synthetic.main.fragment_facts_list.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /**
@@ -52,6 +52,10 @@ class FactsListFragment : Fragment() {
         } catch (ex: ClassCastException) {
             throw ClassCastException(context::class.simpleName + " must implement onSomeEventListener")
         }
+    }
+
+     fun getAttachedContext():Context{
+        return mContext
     }
 
 

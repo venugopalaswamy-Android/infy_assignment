@@ -7,7 +7,7 @@ import com.android.infyassignment.utilities.CallBackInterFace
 import kotlinx.android.synthetic.main.activity_facts_list_screen.*
 
 
-class FactsListScreen : AppCompatActivity(),CallBackInterFace {
+class FactsListScreen : AppCompatActivity(), CallBackInterFace {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

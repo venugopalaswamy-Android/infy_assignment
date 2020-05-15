@@ -20,7 +20,7 @@ class ViewModelRepository(private val apiInterface: APIInterface, val factDao: F
 
         apiInterface.getFactsFromServer(keyStrValue).enqueue(object : Callback<ClsFactsResponse> {
             override fun onFailure(call: Call<ClsFactsResponse>, t: Throwable) {
-                listener.onFailure()
+                listener.onFailure(t)
             }
 
             override fun onResponse(
@@ -37,7 +37,7 @@ class ViewModelRepository(private val apiInterface: APIInterface, val factDao: F
                         factDao.insertFactsList(clsFactsResponse.clsFacts)
                     }).start()
                 } else {
-                    listener.onFailure()
+                    listener.onFailure(null)
                 }
 
             }
@@ -46,7 +46,7 @@ class ViewModelRepository(private val apiInterface: APIInterface, val factDao: F
 
     }
 
-    fun getTotalResponseObjFromDB(): LiveData<List<ClsFacts>> {
+    fun getTotalFactsListFromDB(): LiveData<List<ClsFacts>> {
         return factDao.getAllFactTableData()
     }
 
@@ -60,6 +60,6 @@ class ViewModelRepository(private val apiInterface: APIInterface, val factDao: F
      */
     interface CallBackListener {
         fun onSuccess(data: ClsFactsResponse)
-        fun onFailure()
+        fun onFailure(t: Throwable?)
     }
 }
