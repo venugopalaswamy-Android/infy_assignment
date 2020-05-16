@@ -35,6 +35,7 @@ class ViewModelRepository(private val apiInterface: APIInterface, val factDao: F
                         factDao.deleteAllFacts()
                         factDao.insertRootFactDetail(clsRootFact)
                         factDao.insertFactsList(clsFactsResponse.clsFacts)
+                        listener.onSuccess(factDao.getAllFactTableData(),factDao.getRootFactData())
                     }).start()
                 } else {
                     listener.onFailure(null)
@@ -46,11 +47,11 @@ class ViewModelRepository(private val apiInterface: APIInterface, val factDao: F
 
     }
 
-    fun getTotalFactsListFromDB(): LiveData<List<ClsFacts>> {
+    fun getTotalFactsListFromDB(): List<ClsFacts> {
         return factDao.getAllFactTableData()
     }
 
-    fun getRootFactsData(): LiveData<ClsRootFact> {
+    fun getRootFactsData(): ClsRootFact {
         return factDao.getRootFactData()
     }
 
@@ -59,7 +60,7 @@ class ViewModelRepository(private val apiInterface: APIInterface, val factDao: F
      * interface to give the CallBacks on the Response from Server.
      */
     interface CallBackListener {
-        fun onSuccess(data: ClsFactsResponse)
+        fun onSuccess(data: List<ClsFacts>,rootData: ClsRootFact)
         fun onFailure(t: Throwable?)
     }
 }

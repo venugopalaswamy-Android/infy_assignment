@@ -54,13 +54,13 @@ class FactsListFragment : Fragment() {
         }
     }
 
-     fun getAttachedContext():Context{
+    fun getAttachedContext(): Context {
         return mContext
     }
 
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         val isTablet: Boolean = mContext.resources.getBoolean(R.bool.isTablet)
         // condition to set the Different View Style for Tablet & mobile cards.
         if (isTablet) {
@@ -102,10 +102,9 @@ class FactsListFragment : Fragment() {
     /**
      * render & update the UI
      */
-    private var factsListAdapter: FactsListAdapter? = null
     private var isCalledForData: Boolean = false
     private fun setUpListToDisplay() {
-        factsViewModel.getTotalFactsObjectFromDB().observe(this, Observer {
+        factsViewModel.listOfFacts.observe(this, Observer {
             if (it == null || it.isEmpty()) {
                 if (!isCalledForData) {
                     progressbar_view.visibility = View.VISIBLE
@@ -116,13 +115,8 @@ class FactsListFragment : Fragment() {
                 progressbar_view.visibility = View.GONE
                 error_view.visibility = View.GONE
                 recyclerView.visibility = View.VISIBLE
-                if (factsListAdapter == null) {
-                    factsListAdapter = FactsListAdapter(mContext, it as MutableList<ClsFacts>)
-                    recyclerView.adapter = factsListAdapter
-                } else {
-                    factsListAdapter?.updateList(it as MutableList<ClsFacts>)
-                    factsListAdapter?.notifyDataSetChanged()
-                }
+                var factsListAdapter = FactsListAdapter(mContext, it as MutableList<ClsFacts>)
+                recyclerView.adapter = factsListAdapter
                 swipeToRefresh.isRefreshing = false
 
                 Handler().postDelayed({ isCalledForData = false }, 3000)
@@ -136,7 +130,7 @@ class FactsListFragment : Fragment() {
      * render Title in Activity
      */
     private fun setUpTitleInActivity() {
-        factsViewModel.getRootFacts().observe(this, Observer {
+        factsViewModel.rootFact.observe(this, Observer {
             if (it != null) {
                 callBackInterface.setTitle(it.title)
             }

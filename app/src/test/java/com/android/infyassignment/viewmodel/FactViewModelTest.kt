@@ -5,6 +5,7 @@ import android.os.Looper.getMainLooper
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.android.infyassignment.data.model.ClsFacts
+import com.android.infyassignment.data.model.ClsRootFact
 import junit.framework.Assert.*
 import org.junit.After
 import org.junit.Before
@@ -44,7 +45,13 @@ class FactViewModelTest : KoinTest {
 
     @Test
     fun fetchFactsListFromDBInitially() {
-        assertNull(factsViewModel.getTotalFactsObjectFromDB().value)
+        assertNotNull(factsViewModel.listOfFacts.value)
+    }
+
+
+    @Test
+    fun fetchRootFactsFromDBInitially() {
+        assertNull(factsViewModel.rootFact.value)
     }
 
     @Test
@@ -56,14 +63,17 @@ class FactViewModelTest : KoinTest {
     }
 
     @Test
-    fun fetchFactsListFromDBAfterServerCall() {
+    fun fetchFactsListAndRootDataFromDBAfterServerCall() {
+        factsViewModel.listOfFacts.observeForever(listOfFactsList)
         factsViewModel.callToGetFactsFromServer()
         Thread.sleep(5000)
         shadowOf(getMainLooper()).idle()
         val value =
-            factsViewModel.getTotalFactsObjectFromDB().value ?: error("No value from list")
+            factsViewModel.listOfFacts.value ?: error("No value from list")
         Mockito.verify(listOfFactsList).onChanged(value)
+
     }
+
 
     @After
     fun endTest() {

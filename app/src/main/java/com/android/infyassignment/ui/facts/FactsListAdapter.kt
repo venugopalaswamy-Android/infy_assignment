@@ -17,6 +17,7 @@ class FactsListAdapter(
     private var listOfFacts: MutableList<ClsFacts>
 ) : RecyclerView.Adapter<FactsListAdapter.ViewHolder>() {
 
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtTitle = itemView.findViewById(R.id.txt_title) as TextView
         val txtDescription = itemView.findViewById(R.id.txt_description) as TextView
@@ -53,10 +54,6 @@ class FactsListAdapter(
             .into(holder.imgProfile)
     }
 
-    fun updateList(it: MutableList<ClsFacts>) {
-        listOfFacts.clear()
-        listOfFacts = it
-    }
 
 
 }

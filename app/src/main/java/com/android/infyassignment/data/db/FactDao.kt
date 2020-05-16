@@ -9,7 +9,7 @@ import com.android.infyassignment.data.model.ClsRootFact
 interface FactDao {
 
     @Query("Select * From tbl_facts")
-    fun getAllFactTableData(): LiveData<List<ClsFacts>>
+    fun getAllFactTableData(): List<ClsFacts>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRootFactDetail(clsRootFact: ClsRootFact)
@@ -18,7 +18,7 @@ interface FactDao {
     fun insertFactsList(listOfFacts: List<ClsFacts>)
 
     @Query("Select * From tbl_root where root_id == 0")
-    fun getRootFactData(): LiveData<ClsRootFact>
+    fun getRootFactData(): ClsRootFact
 
     @Query("Delete from tbl_facts")
     fun deleteAllFacts()
